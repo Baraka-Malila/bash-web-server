@@ -20,6 +20,38 @@ Thumbs.db
 test-output/
 coverage/
 
+# Build artifacts
+dist/
+build/
+
+# Package manager
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime
+*.pid
+*.sock
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Backup files
+*~
+*.bak
+*.backup
+
+# Named pipes (created by server during operation)
+/tmp/bash_server_*
+coverage/
+
 # Backup files
 *.bak
 *.backup

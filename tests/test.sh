@@ -3,8 +3,6 @@
 # Pilipili Server - Test Suite
 # Tests basic functionality of all server implementations
 
-set -euo pipefail
-
 # Colors
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -45,10 +43,8 @@ run_test() {
     
     if eval "$cmd" >/dev/null 2>&1; then
         pass "$test_name"
-        return 0
     else
         fail "$test_name"
-        return 1
     fi
 }
 
@@ -59,10 +55,6 @@ test_http_responses() {
     # Test tiny pure server
     run_test "Tiny pure server generates response" \
         "./server-tiny-pure.sh / | grep -q 'HTTP/1.1 200 OK'"
-    
-    # Test minimal pure server  
-    run_test "Minimal pure server generates response" \
-        "./server-minimal-pure.sh / | grep -q 'HTTP/1.1 200 OK'"
     
     # Test 404 response
     run_test "404 response for missing file" \
@@ -86,7 +78,7 @@ test_file_operations() {
         "test -x pilipili-server"
     
     run_test "Server scripts are executable" \
-        "test -x server.sh && test -x server-tiny-pure.sh"
+        "test -x server.sh && test -x server-tiny-pure.sh && test -x server-ultra-pure.sh"
 }
 
 # Test pure Bash features

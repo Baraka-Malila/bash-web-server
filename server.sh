@@ -51,7 +51,7 @@ log() {
 # Function to show help
 show_help() {
     cat << EOF
-Bash Lite Server - A simple static web server in pure Bash
+Pilipili Server - A spicy little web server in pure Bash 🌶️
 
 Usage: $0 [OPTIONS]
 
@@ -282,7 +282,7 @@ handle_request() {
 
 # Function to start the server
 start_server() {
-    log "INFO" "Starting Bash Lite Server..."
+    log "INFO" "Starting Pilipili Server..."
     log "INFO" "Serving directory: $(realpath "$SERVE_DIR")"
     log "INFO" "Listening on port: $PORT"
     log "INFO" "Server URL: http://localhost:$PORT"

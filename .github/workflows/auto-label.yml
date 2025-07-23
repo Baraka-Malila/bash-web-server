@@ -1,0 +1,44 @@
+name: Issue and PR Templates
+
+on:
+  issues:
+    types: [opened]
+  pull_request:
+    types: [opened]
+
+jobs:
+  auto-label:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Add labels to issues
+      if: github.event_name == 'issues'
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const issue = context.payload.issue;
+          const title = issue.title.toLowerCase();
+          const body = issue.body.toLowerCase();
+          
+          let labels = [];
+          
+          if (title.includes('bug') || body.includes('bug')) {
+            labels.push('bug');
+          }
+          if (title.includes('feature') || body.includes('enhancement')) {
+            labels.push('enhancement');  
+          }
+          if (title.includes('doc') || body.includes('documentation')) {
+            labels.push('documentation');
+          }
+          if (title.includes('security')) {
+            labels.push('security');
+          }
+          
+          if (labels.length > 0) {
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue.number,
+              labels: labels
+            });
+          }

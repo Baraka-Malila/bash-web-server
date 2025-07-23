@@ -21,7 +21,7 @@ Perfect for local development, quick file sharing, or learning HTTP fundamentals
 
 ### Installation
 ```bash
-curl -sSL https://raw.githubusercontent.com/YOUR-USERNAME/pilipili-server/main/install.sh | bash
+curl -sSL https://raw.githubusercontent.com/Baraka-Malila/pilipili-server/main/install.sh | bash
 ```
 
 ### Usage

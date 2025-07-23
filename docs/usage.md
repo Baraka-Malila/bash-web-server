@@ -3,26 +3,26 @@
 ## Command Line Interface
 
 ```bash
-bash-lite-server [OPTIONS] [DIRECTORY]
+pilipili-server [OPTIONS] [DIRECTORY]
 ```
 
 ### Options
 
 | Option | Description | Example |
 |--------|-------------|---------|
-| `-p, --port PORT` | Port to listen on | `bash-lite-server -p 3000` |
-| `-h, --help` | Show help message | `bash-lite-server --help` |
-| `-v, --version` | Show version | `bash-lite-server --version` |
-| `--verbose` | Enable detailed logging | `bash-lite-server --verbose` |
+| `-p, --port PORT` | Port to listen on | `pilipili-server -p 3000` |
+| `-h, --help` | Show help message | `pilipili-server --help` |
+| `-v, --version` | Show version | `pilipili-server --version` |
+| `--verbose` | Enable detailed logging | `pilipili-server --verbose` |
 
 ### Directory Argument
 
 The directory argument specifies which folder to serve files from.
 
 ```bash
-bash-lite-server                 # Serves ./public
-bash-lite-server ./docs         # Serves ./docs  
-bash-lite-server /var/www/html   # Serves /var/www/html
+pilipili-server                 # Serves ./public
+pilipili-server ./docs         # Serves ./docs  
+pilipili-server /var/www/html   # Serves /var/www/html
 ```
 
 ## Common Use Cases
@@ -31,28 +31,28 @@ bash-lite-server /var/www/html   # Serves /var/www/html
 ```bash
 # Serve your website during development
 cd my-project
-bash-lite-server ./dist -p 3000 --verbose
+pilipili-server ./dist -p 3000 --verbose
 ```
 
 ### 2. Quick File Sharing
 ```bash
 # Share files over HTTP on local network
-bash-lite-server ~/Documents -p 8000
+pilipili-server ~/Documents -p 8000
 # Access from other devices: http://YOUR_IP:8000
 ```
 
 ### 3. Static Site Preview
 ```bash
 # Preview static site generator output
-bash-lite-server ./_site
-bash-lite-server ./build
-bash-lite-server ./public
+pilipili-server ./_site
+pilipili-server ./build
+pilipili-server ./public
 ```
 
 ### 4. Documentation Server
 ```bash
 # Serve documentation locally
-bash-lite-server ./docs -p 4000
+pilipili-server ./docs -p 4000
 ```
 
 ## Server Behavior

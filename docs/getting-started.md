@@ -4,29 +4,29 @@
 
 ### One-line Install
 ```bash
-curl -sSL https://raw.githubusercontent.com/cyberpunk/bash-lite-server/main/install.sh | bash
+curl -sSL https://raw.githubusercontent.com/Baraka-Malila/pilipili-server/main/install.sh | bash
 ```
 
 ### Manual Install
 ```bash
-git clone https://github.com/cyberpunk/bash-lite-server.git
-cd bash-lite-server
-chmod +x bash-lite-server install.sh
+git clone https://github.com/Baraka-Malila/pilipili-server.git
+cd pilipili-server
+chmod +x pilipili-server install.sh
 ./install.sh
 ```
 
 ### Local Development
 ```bash
-git clone https://github.com/cyberpunk/bash-lite-server.git
-cd bash-lite-server
-./bash-lite-server
+git clone https://github.com/Baraka-Malila/pilipili-server.git
+cd pilipili-server
+./pilipili-server
 ```
 
 ## First Run
 
 1. **Start the server:**
    ```bash
-   bash-lite-server
+   pilipili-server
    ```
 
 2. **Open your browser:**
@@ -39,13 +39,13 @@ cd bash-lite-server
 
 ```bash
 # Default: serve ./public on port 8080
-bash-lite-server
+pilipili-server
 
 # Custom port
-bash-lite-server -p 3000
+pilipili-server -p 3000
 
 # Custom directory
-bash-lite-server ./my-website
+pilipili-server ./my-website
 
 # Verbose logging
 bash-lite-server --verbose

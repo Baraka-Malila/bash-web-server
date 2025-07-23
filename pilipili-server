@@ -34,7 +34,7 @@ EXAMPLES:
 DIRECTORY:
     Directory to serve files from (default: ./public)
 
-For more information, visit: https://github.com/YOUR-USERNAME/pilipili-server
+For more information, visit: https://github.com/Baraka-Malila/pilipili-server
 EOF
 }
 
