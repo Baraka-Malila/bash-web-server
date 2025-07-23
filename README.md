@@ -2,6 +2,8 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Bash](https://img.shields.io/badge/Made%20with-Bash-1f425f.svg)](https://www.gnu.org/software/bash/)
+[![npm version](https://badge.fury.io/js/pilipili-server.svg)](https://www.npmjs.com/package/pilipili-server)
+[![npm downloads](https://img.shields.io/npm/dm/pilipili-server.svg)](https://www.npmjs.com/package/pilipili-server)
 
 A spicy little web server written in **pure Bash** - no Node.js, no Python, just shell scripting! 🌶️
 
@@ -21,14 +23,14 @@ Perfect for local development, quick file sharing, or learning HTTP fundamentals
 
 ### Installation Methods
 
-#### Method 1: Direct Install (Recommended)
-```bash
-curl -sSL https://raw.githubusercontent.com/Baraka-Malila/pilipili-server/main/install.sh | bash
-```
-
-#### Method 2: npm Package
+#### Method 1: npm Install (Recommended)
 ```bash
 npm install -g pilipili-server
+```
+
+#### Method 2: Direct Install Script
+```bash
+curl -sSL https://raw.githubusercontent.com/Baraka-Malila/pilipili-server/main/install.sh | bash
 ```
 
 #### Method 3: Manual Install
