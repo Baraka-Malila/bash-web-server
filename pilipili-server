@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Bash Lite Server - Main Entry Point
-# A lightweight HTTP server written in pure Bash
+# Pilipili Server - Main Entry Point
+# A spicy little web server written in pure Bash 🌶️
 # Version: 1.0.0
 
 set -euo pipefail
@@ -14,10 +14,10 @@ VERSION="1.0.0"
 # Help text
 show_help() {
     cat << 'EOF'
-Bash Lite Server - A lightweight HTTP server in pure Bash
+Pilipili Server - A spicy little web server 🌶️
 
 USAGE:
-    bash-lite-server [OPTIONS] [DIRECTORY]
+    pilipili-server [OPTIONS] [DIRECTORY]
 
 OPTIONS:
     -p, --port PORT     Port to listen on (default: 8080)
@@ -26,21 +26,21 @@ OPTIONS:
     --verbose           Enable verbose logging
 
 EXAMPLES:
-    bash-lite-server                    # Serve ./public on port 8080
-    bash-lite-server -p 3000           # Serve on port 3000
-    bash-lite-server ./docs            # Serve ./docs directory
-    bash-lite-server --verbose         # Enable detailed logging
+    pilipili-server                     # Serve ./public on port 8080
+    pilipili-server -p 3000            # Serve on port 3000
+    pilipili-server ./docs             # Serve ./docs directory
+    pilipili-server --verbose          # Enable detailed logging
 
 DIRECTORY:
     Directory to serve files from (default: ./public)
 
-For more information, visit: https://github.com/YOUR-USERNAME/bash-lite-server
+For more information, visit: https://github.com/YOUR-USERNAME/pilipili-server
 EOF
 }
 
 show_version() {
-    echo "Bash Lite Server v${VERSION}"
-    echo "A lightweight HTTP server written in pure Bash"
+    echo "Pilipili Server v${VERSION} 🌶️"
+    echo "A spicy little web server written in pure Bash"
 }
 
 # Parse arguments
@@ -85,9 +85,9 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 export PORT SERVE_DIR VERBOSE
 
 # Start the main server
-echo "� Starting Bash Lite Server v${VERSION}..."
+echo "🌶️ Starting Pilipili Server v${VERSION}..."
 echo "📁 Serving: $SERVE_DIR"
-echo "� URL: http://localhost:$PORT"
+echo "🔗 URL: http://localhost:$PORT"
 echo "⏹️  Press Ctrl+C to stop"
 echo
 

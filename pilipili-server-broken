@@ -1,0 +1,99 @@
+#!/bin/bash
+
+# Pilipili Server - Main Entry Point
+# A spicy little web server written # Start the main server
+echo "🌶️ Starting Pilipili Server v${VERSION}..."
+echo "📁 Serving: $SERVE_DIR"
+echo "🔗 URL: http://localhost:$PORT"
+echo "⏹️  Press Ctrl+C to stop"
+echoe Bash 🌶️
+# Version: 1.0.0
+
+set -euo pipefail
+
+# Default values
+DEFAULT_PORT=8080
+DEFAULT_DIR="./public"
+VERSION="1.0.0"
+
+# Help text
+show_help() {
+    cat << 'EOF'
+Pilipili Server - A spicy little web server 🌶️
+
+USAGE:
+    pilipili-server [OPTIONS] [DIRECTORY]
+
+OPTIONS:
+    -p, --port PORT     Port to listen on (default: 8080)
+    -h, --help          Show this help message
+    -v, --version       Show version information
+    --verbose           Enable verbose logging
+
+EXAMPLES:
+    pilipili-server                     # Serve ./public on port 8080
+    pilipili-server -p 3000            # Serve on port 3000
+    pilipili-server ./docs             # Serve ./docs directory
+    pilipili-server --verbose          # Enable detailed logging
+
+DIRECTORY:
+    Directory to serve files from (default: ./public)
+
+For more information, visit: https://github.com/YOUR-USERNAME/pilipili-server
+EOF
+}
+
+show_version() {
+    echo "Pilipili Server v${VERSION} 🌶️"
+    echo "A spicy little web server written in pure Bash"
+}
+
+# Parse arguments
+SERVE_DIR="$DEFAULT_DIR"
+PORT="$DEFAULT_PORT"
+VERBOSE=false
+
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        -p|--port)
+            PORT="$2"
+            shift 2
+            ;;
+        -h|--help)
+            show_help
+            exit 0
+            ;;
+        -v|--version)
+            show_version
+            exit 0
+            ;;
+        --verbose)
+            VERBOSE=true
+            shift
+            ;;
+        -*)
+            echo "Unknown option: $1" >&2
+            echo "Use --help for usage information" >&2
+            exit 1
+            ;;
+        *)
+            SERVE_DIR="$1"
+            shift
+            ;;
+    esac
+done
+
+# Get script directory
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Export variables for sub-scripts
+export PORT SERVE_DIR VERBOSE
+
+# Start the main server
+echo "� Starting Bash Lite Server v${VERSION}..."
+echo "📁 Serving: $SERVE_DIR"
+echo "� URL: http://localhost:$PORT"
+echo "⏹️  Press Ctrl+C to stop"
+echo
+
+exec "$SCRIPT_DIR/server.sh" --port "$PORT" --dir "$SERVE_DIR" $([ "$VERBOSE" = true ] && echo "--verbose")

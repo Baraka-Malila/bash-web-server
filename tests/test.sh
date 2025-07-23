@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Bash Lite Server - Test Suite
+# Pilipili Server - Test Suite
 # Tests basic functionality of all server implementations
 
 set -euo pipefail
@@ -83,7 +83,7 @@ test_file_operations() {
     
     # Test executables
     run_test "Main executable is executable" \
-        "test -x bash-lite-server"
+        "test -x pilipili-server"
     
     run_test "Server scripts are executable" \
         "test -x server.sh && test -x server-tiny-pure.sh"
@@ -111,10 +111,10 @@ test_cli() {
     log "Testing CLI interface..."
     
     run_test "Help option works" \
-        "./bash-lite-server --help | grep -q 'Bash Lite Server'"
+        "./pilipili-server --help | grep -q 'Pilipili Server'"
     
     run_test "Version option works" \
-        "./bash-lite-server --version | grep -q 'v[0-9]'"
+        "./pilipili-server --version | grep -q 'v[0-9]'"
 }
 
 # Performance test
@@ -136,7 +136,7 @@ test_performance() {
 
 # Main test runner
 main() {
-    echo -e "${BLUE}🧪 Bash Lite Server Test Suite${NC}"
+    echo -e "${BLUE}🌶️ Pilipili Server Test Suite${NC}"
     echo "=================================="
     echo
     

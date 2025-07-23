@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Bash Lite Server - A simple static web server in pure Bash
+# Pilipili Server - A spicy little web server in pure Bash 🌶️
 # Version: 1.0.0
 
 # Default configuration
