@@ -290,88 +290,72 @@ start_server() {
     log "INFO" "Press Ctrl+C to stop the server"
     echo
     
-    # Create a temporary script that handles requests
-    local handler_script="/tmp/bash_server_handler_$$"
-    cat > "$handler_script" << 'EOF'
-#!/bin/bash
-
-# Copy necessary variables and functions
-SERVE_DIR="SERVE_DIR_PLACEHOLDER"
-SERVER_NAME="SERVER_NAME_PLACEHOLDER"
-VERBOSE=VERBOSE_PLACEHOLDER
-
-# Color codes
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-BLUE='\033[0;34m'
-NC='\033[0m'
-
-# Logging function
-log() {
-    local level=$1
-    shift
-    local message="$*"
-    local timestamp=$(date '+%Y-%m-%d %H:%M:%S')
-    
-    case $level in
-        "INFO")
-            echo -e "${GREEN}[INFO]${NC} ${timestamp} - $message" >&2
-            ;;
-        "WARN")
-            echo -e "${YELLOW}[WARN]${NC} ${timestamp} - $message" >&2
-            ;;
-        "ERROR")
-            echo -e "${RED}[ERROR]${NC} ${timestamp} - $message" >&2
-            ;;
-        "DEBUG")
-            if [ "$VERBOSE" = true ]; then
-                echo -e "${BLUE}[DEBUG]${NC} ${timestamp} - $message" >&2
+    # Start the server loop
+    while true; do
+        log "DEBUG" "Waiting for connection on port $PORT..."
+        
+        # Create named pipes for communication
+        local request_pipe="/tmp/bash_server_request_$$"
+        local response_pipe="/tmp/bash_server_response_$$"
+        
+        mkfifo "$request_pipe" "$response_pipe"
+        
+        # Start netcat in background to listen
+        nc -l -p "$PORT" > "$request_pipe" < "$response_pipe" &
+        local nc_pid=$!
+        
+        # Process the request
+        (
+            # Read the first line (request line)
+            local request_line
+            read -r request_line < "$request_pipe"
+            
+            log "DEBUG" "Request line: $request_line"
+            
+            # Extract the path from the request line
+            local method path protocol
+            read -r method path protocol <<< "$request_line"
+            
+            # Clean up the path
+            path=${path%%\?*}  # Remove query parameters
+            
+            # Default to index.html for root path
+            if [ "$path" = "/" ]; then
+                path="/index.html"
             fi
-            ;;
-    esac
-}
-
-# MIME type function
-get_mime_type() {
-    local file="$1"
-    local extension="${file##*.}"
-    
-    case "$extension" in
-        html|htm) echo "text/html" ;;
-        css) echo "text/css" ;;
-        js) echo "application/javascript" ;;
-        json) echo "application/json" ;;
-        txt) echo "text/plain" ;;
-        png) echo "image/png" ;;
-        jpg|jpeg) echo "image/jpeg" ;;
-        gif) echo "image/gif" ;;
-        svg) echo "image/svg+xml" ;;
-        *) echo "application/octet-stream" ;;
-    esac
-}
-
-# Response function
-send_response() {
-    local status="$1"
-    local content_type="$2"
-    local content="$3"
-    local content_length=${#content}
-    
-    echo -e "HTTP/1.1 $status\r"
-    echo -e "Server: $SERVER_NAME\r"
-    echo -e "Date: $(date -u '+%a, %d %b %Y %H:%M:%S GMT')\r"
-    echo -e "Content-Type: $content_type\r"
-    echo -e "Content-Length: $content_length\r"
-    echo -e "Connection: close\r"
-    echo -e "\r"
-    echo -n "$content"
-}
-
-# 404 function
-send_404() {
-    local path="$1"
-    local content="<!DOCTYPE html>
+            
+            # Security: prevent directory traversal
+            if [[ "$path" == *".."* ]]; then
+                log "WARN" "Directory traversal attempt: $path"
+                path="/index.html"
+            fi
+            
+            # Build full file path
+            local file_path="$SERVE_DIR$path"
+            
+            log "INFO" "$method $path"
+            
+            # Prepare response
+            if [ -f "$file_path" ] && [ -r "$file_path" ]; then
+                local mime_type=$(get_mime_type "$file_path")
+                local content=$(cat "$file_path")
+                
+                # Send HTTP response
+                {
+                    echo -e "HTTP/1.1 200 OK\r"
+                    echo -e "Server: $SERVER_NAME\r"
+                    echo -e "Date: $(date -u '+%a, %d %b %Y %H:%M:%S GMT')\r"
+                    echo -e "Content-Type: $mime_type\r"
+                    echo -e "Content-Length: ${#content}\r"
+                    echo -e "Connection: close\r"
+                    echo -e "\r"
+                    echo -n "$content"
+                } > "$response_pipe"
+                
+                log "INFO" "Served: $file_path ($mime_type)"
+            else
+                # Send 404 response
+                local not_found_content="<!DOCTYPE html>
 <html>
 <head>
     <title>404 Not Found</title>
@@ -388,70 +372,27 @@ send_404() {
     <p><em>$SERVER_NAME</em></p>
 </body>
 </html>"
-    
-    send_response "404 Not Found" "text/html" "$content"
-}
-
-# Main request handler
-read -r request_line
-log "DEBUG" "Request line: $request_line"
-
-read -r method path protocol <<< "$request_line"
-protocol=${protocol%$'\r'}
-
-while read -r line && [ "$line" != $'\r' ]; do
-    log "DEBUG" "Header: $line"
-done
-
-if [ "$method" != "GET" ]; then
-    log "WARN" "Unsupported method: $method"
-    send_response "405 Method Not Allowed" "text/plain" "Method Not Allowed"
-    exit 0
-fi
-
-path=${path%%\?*}
-path=$(printf '%b' "${path//%/\\x}")
-
-if [[ "$path" == *".."* ]]; then
-    log "WARN" "Directory traversal attempt: $path"
-    send_404 "$path"
-    exit 0
-fi
-
-if [ "$path" = "/" ]; then
-    path="/index.html"
-fi
-
-file_path="$SERVE_DIR$path"
-log "INFO" "$method $path"
-
-if [ -f "$file_path" ] && [ -r "$file_path" ]; then
-    mime_type=$(get_mime_type "$file_path")
-    content=$(cat "$file_path")
-    send_response "200 OK" "$mime_type" "$content"
-    log "INFO" "Served: $file_path ($mime_type)"
-else
-    log "WARN" "File not found: $file_path"
-    send_404 "$path"
-fi
-EOF
-    
-    # Replace placeholders with actual values
-    sed -i "s|SERVE_DIR_PLACEHOLDER|$SERVE_DIR|g" "$handler_script"
-    sed -i "s|SERVER_NAME_PLACEHOLDER|$SERVER_NAME|g" "$handler_script"
-    sed -i "s|VERBOSE_PLACEHOLDER|$VERBOSE|g" "$handler_script"
-    chmod +x "$handler_script"
-    
-    # Cleanup function for the script
-    local cleanup_script() {
-        rm -f "$handler_script"
-    }
-    trap cleanup_script EXIT
-    
-    # Start the server loop
-    while true; do
-        # Use netcat to listen and execute our handler script
-        nc -l -p "$PORT" -e "$handler_script"
+                
+                {
+                    echo -e "HTTP/1.1 404 Not Found\r"
+                    echo -e "Server: $SERVER_NAME\r"
+                    echo -e "Date: $(date -u '+%a, %d %b %Y %H:%M:%S GMT')\r"
+                    echo -e "Content-Type: text/html\r"
+                    echo -e "Content-Length: ${#not_found_content}\r"
+                    echo -e "Connection: close\r"
+                    echo -e "\r"
+                    echo -n "$not_found_content"
+                } > "$response_pipe"
+                
+                log "WARN" "File not found: $file_path"
+            fi
+        ) &
+        
+        # Wait for netcat to finish
+        wait $nc_pid
+        
+        # Clean up pipes
+        rm -f "$request_pipe" "$response_pipe"
         
         # Small delay to prevent overwhelming the system
         sleep 0.1
