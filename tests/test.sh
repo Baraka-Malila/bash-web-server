@@ -93,9 +93,9 @@ test_file_operations() {
 test_pure_bash() {
     log "Testing pure Bash features..."
     
-    # Test demo mode
-    run_test "Demo script runs" \
-        "echo 'quit' | timeout 5s ./demo-pure.sh interactive"
+    # Test ultra-pure server
+    run_test "Ultra-pure server runs" \
+        "echo 'quit' | timeout 5s ./server-ultra-pure.sh"
     
     # Test TCP client (if network available)
     if command -v ping >/dev/null && ping -c 1 google.com >/dev/null 2>&1; then

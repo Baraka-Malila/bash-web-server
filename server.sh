@@ -1,8 +1,7 @@
 #!/bin/bash
 
 # Bash Lite Server - A simple static web server in pure Bash
-# Author: Generated with GitHub Copilot
-# Version: 1.0
+# Version: 1.0.0
 
 # Default configuration
 DEFAULT_PORT=8080

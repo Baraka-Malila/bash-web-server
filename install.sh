@@ -6,7 +6,7 @@
 set -euo pipefail
 
 VERSION="1.0.0"
-REPO_URL="https://github.com/cyberpunk/bash-lite-server"
+REPO_URL="https://github.com/YOUR-USERNAME/bash-lite-server"
 
 # Colors
 RED='\033[0;31m'
@@ -32,7 +32,7 @@ show_help() {
 Bash Lite Server Installation Script
 
 USAGE:
-    curl -sSL https://raw.githubusercontent.com/cyberpunk/bash-lite-server/main/install.sh | bash
+    curl -sSL https://raw.githubusercontent.com/YOUR-USERNAME/bash-lite-server/main/install.sh | bash
     
     Or download and run locally:
     ./install.sh [OPTIONS]
