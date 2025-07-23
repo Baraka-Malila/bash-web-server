@@ -1,0 +1,110 @@
+#!/bin/bash
+
+# Bash Lite Server - Main Entry Point
+# A lightweight HTTP server written in pure Bash
+# Version: 1.0.0
+
+set -euo pipefail
+
+# Default values
+DEFAULT_PORT=8080
+DEFAULT_DIR="./public"
+VERSION="1.0.0"
+
+# Help text
+show_help() {
+    cat << 'EOF'
+Bash Lite Server - A lightweight HTTP server in pure Bash
+
+USAGE:
+    bash-lite-server [OPTIONS] [DIRECTORY]
+
+OPTIONS:
+    -p, --port PORT     Port to listen on (default: 8080)
+    -h, --help          Show this help message
+    -v, --version       Show version information
+    --verbose           Enable verbose logging
+    --pure              Use ultra-pure mode (no external tools)
+    --demo              Run interactive demo
+
+EXAMPLES:
+    bash-lite-server                    # Serve ./public on port 8080
+    bash-lite-server -p 3000           # Serve on port 3000
+    bash-lite-server ./docs            # Serve ./docs directory
+    bash-lite-server --pure            # Use pure Bash mode
+    bash-lite-server --demo            # Interactive demo mode
+
+DIRECTORY:
+    Directory to serve files from (default: ./public)
+
+For more information, visit: https://github.com/cyberpunk/bash-lite-server
+EOF
+}
+
+show_version() {
+    echo "Bash Lite Server v${VERSION}"
+    echo "A lightweight HTTP server written in pure Bash"
+}
+
+# Parse arguments
+SERVE_DIR="$DEFAULT_DIR"
+PORT="$DEFAULT_PORT"
+VERBOSE=false
+PURE_MODE=false
+DEMO_MODE=false
+
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        -p|--port)
+            PORT="$2"
+            shift 2
+            ;;
+        -h|--help)
+            show_help
+            exit 0
+            ;;
+        -v|--version)
+            show_version
+            exit 0
+            ;;
+        --verbose)
+            VERBOSE=true
+            shift
+            ;;
+        --pure)
+            PURE_MODE=true
+            shift
+            ;;
+        --demo)
+            DEMO_MODE=true
+            shift
+            ;;
+        -*)
+            echo "Unknown option: $1" >&2
+            echo "Use --help for usage information" >&2
+            exit 1
+            ;;
+        *)
+            SERVE_DIR="$1"
+            shift
+            ;;
+    esac
+done
+
+# Get script directory
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Export variables for sub-scripts
+export PORT SERVE_DIR VERBOSE
+
+# Run appropriate mode
+if [ "$DEMO_MODE" = true ]; then
+    echo "🎯 Starting Bash Lite Server Demo Mode..."
+    exec "$SCRIPT_DIR/demo-pure.sh" interactive
+elif [ "$PURE_MODE" = true ]; then
+    echo "🚀 Starting Bash Lite Server (Ultra-Pure Mode)..."
+    exec "$SCRIPT_DIR/server-ultra-pure.sh" --port "$PORT" --dir "$SERVE_DIR" $([ "$VERBOSE" = true ] && echo "--verbose")
+else
+    echo "🌐 Starting Bash Lite Server (Standard Mode)..."
+    exec "$SCRIPT_DIR/server.sh" --port "$PORT" --dir "$SERVE_DIR" $([ "$VERBOSE" = true ] && echo "--verbose")
+fi
