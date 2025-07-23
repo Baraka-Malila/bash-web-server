@@ -10,8 +10,7 @@
   "scripts": {
     "start": "./pilipili-server",
     "test": "./tests/test.sh",
-    "install-local": "./install.sh --user",
-    "demo": "./demo-pure.sh"
+    "install-local": "./install.sh --user"
   },
   "repository": {
     "type": "git",
@@ -52,8 +51,6 @@
   "files": [
     "pilipili-server",
     "server.sh",
-    "server-tiny-pure.sh", 
-    "server-ultra-pure.sh",
     "install.sh",
     "public/",
     "docs/",
