@@ -1,0 +1,61 @@
+{
+  "name": "@baraka-malila/pilipili-server",
+  "version": "1.0.0",
+  "description": "🌶️ A spicy little web server written in pure Bash - no Node.js, no Python, just shell scripting!",
+  "main": "pilipili-server",
+  "bin": {
+    "pilipili-server": "./pilipili-server",
+    "pilipili": "./pilipili-server"
+  },
+  "scripts": {
+    "start": "./pilipili-server",
+    "test": "./tests/test.sh",
+    "install-local": "./install.sh --user"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Baraka-Malila/pilipili-server.git"
+  },
+  "keywords": [
+    "bash",
+    "web-server",
+    "http",
+    "static-files",
+    "lightweight",
+    "shell-scripting",
+    "local-development",
+    "file-sharing",
+    "embedded",
+    "containers",
+    "pure-bash",
+    "no-dependencies"
+  ],
+  "author": "Baraka Malila <Cyberpunk3600@outlook.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Baraka-Malila/pilipili-server/issues"
+  },
+  "homepage": "https://github.com/Baraka-Malila/pilipili-server#readme",
+  "engines": {
+    "node": ">=10.0.0"
+  },
+  "os": [
+    "linux",
+    "darwin",
+    "freebsd"
+  ],
+  "preferGlobal": true,
+  "files": [
+    "pilipili-server",
+    "server.sh",
+    "install.sh",
+    "public/",
+    "docs/",
+    "examples/",
+    "README.md",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  }
+}

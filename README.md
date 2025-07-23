@@ -25,7 +25,11 @@ Perfect for local development, quick file sharing, or learning HTTP fundamentals
 
 #### Method 1: npm Install (Recommended)
 ```bash
+# From npmjs.com (main registry)
 npm install -g pilipili-server
+
+# Or from GitHub Packages
+npm install -g @baraka-malila/pilipili-server
 ```
 
 #### Method 2: Direct Install Script
