@@ -65,13 +65,15 @@ demo() {
     
     printf "Testing GET /:\n"
     printf "-------------\n"
-    http_response "/" | head -10
-    printf "...\n\n"
+    local response=$(http_response "/")
+    printf "%s\n" "${response:0:300}..."
+    printf "\n"
     
     printf "Testing GET /nonexistent:\n"
     printf "------------------------\n"
-    http_response "/nonexistent" | head -10
-    printf "...\n\n"
+    local response=$(http_response "/nonexistent")
+    printf "%s\n" "${response:0:300}..."
+    printf "\n"
     
     printf "Available functions:\n"
     printf "  http_response <path>  - Generate HTTP response for a path\n"
