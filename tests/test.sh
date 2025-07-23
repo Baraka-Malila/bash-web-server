@@ -58,15 +58,15 @@ test_http_responses() {
     
     # Test tiny pure server
     run_test "Tiny pure server generates response" \
-        "echo '/' | ./server-tiny-pure.sh | grep -q 'HTTP/1.1 200 OK'"
+        "./server-tiny-pure.sh / | grep -q 'HTTP/1.1 200 OK'"
     
     # Test minimal pure server  
     run_test "Minimal pure server generates response" \
-        "echo '/' | ./server-minimal-pure.sh | grep -q 'HTTP/1.1 200 OK'"
+        "./server-minimal-pure.sh / | grep -q 'HTTP/1.1 200 OK'"
     
     # Test 404 response
     run_test "404 response for missing file" \
-        "echo '/missing' | ./server-tiny-pure.sh | grep -q 'HTTP/1.1 404 Not Found'"
+        "./server-tiny-pure.sh /missing | grep -q 'HTTP/1.1 404 Not Found'"
 }
 
 # Test file operations
