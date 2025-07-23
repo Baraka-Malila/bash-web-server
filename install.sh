@@ -1,12 +1,12 @@
 #!/bin/bash
 
-# Bash Lite Server - Installation Script
-# Installs bash-lite-server to system or user directory
+# Pilipili Server - Installation Script
+# Installs pilipili-server to system or user directory
 
 set -euo pipefail
 
 VERSION="1.0.0"
-REPO_URL="https://github.com/YOUR-USERNAME/bash-lite-server"
+REPO_URL="https://github.com/YOUR-USERNAME/pilipili-server"
 
 # Colors
 RED='\033[0;31m'

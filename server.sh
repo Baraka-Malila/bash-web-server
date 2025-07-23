@@ -6,7 +6,7 @@
 # Default configuration
 DEFAULT_PORT=8080
 DEFAULT_DIR="./public"
-SERVER_NAME="Bash-Lite-Server/1.0"
+SERVER_NAME="Pilipili-Server/1.0"
 
 # Global variables
 PORT=$DEFAULT_PORT
