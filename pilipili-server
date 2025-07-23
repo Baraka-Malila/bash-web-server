@@ -91,4 +91,32 @@ echo "🔗 URL: http://localhost:$PORT"
 echo "⏹️  Press Ctrl+C to stop"
 echo
 
-exec "$SCRIPT_DIR/server.sh" --port "$PORT" --dir "$SERVE_DIR" $([ "$VERBOSE" = true ] && echo "--verbose")
+# Check if socat is available (better than netcat for this)
+if command -v socat >/dev/null 2>&1; then
+    echo "Using socat for robust connection handling..."
+    # Export environment variables for the handler script
+    export SERVE_DIR PORT VERBOSE SERVER_NAME="Pilipili-Server/1.0"
+    # Start socat with fork option to handle multiple connections
+    exec socat TCP4-LISTEN:$PORT,fork,reuseaddr EXEC:"$SCRIPT_DIR/server.sh"
+else
+    echo "⚠️  socat not found - falling back to basic netcat implementation"
+    echo "   For better performance, install socat: sudo apt-get install socat"
+    echo
+    
+    # Basic netcat fallback
+    while true; do
+        echo "Waiting for connection on port $PORT..."
+        (
+            echo -e "HTTP/1.1 200 OK\r"
+            echo -e "Content-Type: text/html\r"
+            echo -e "Connection: close\r"
+            echo -e "\r"
+            if [ -f "$SERVE_DIR/index.html" ]; then
+                cat "$SERVE_DIR/index.html"
+            else
+                echo "<h1>Pilipili Server 🌶️</h1><p>Server is running but no index.html found in $SERVE_DIR</p>"
+            fi
+        ) | nc -l "$PORT" -q 1 2>/dev/null || true
+        sleep 0.1
+    done
+fi

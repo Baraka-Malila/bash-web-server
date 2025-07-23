@@ -54,8 +54,10 @@ Visit **http://localhost:8080** in your browser! 🎉
 ## 🔧 Requirements
 
 - Bash 4.0+
-- `netcat` (usually pre-installed)
+- `socat` (recommended) or `netcat` for socket handling
 - Standard Unix tools (`cat`, `date`, `file`)
+
+**Note:** `socat` is highly recommended for production use as it provides better connection handling and concurrent request support. The server will automatically fall back to `netcat` if `socat` is not available.
 
 ## 📁 Project Structure
 
